@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JavaScript If Statement Exercises</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    .exercise {
+      margin-bottom: 20px;
+    }
+    .card-header {
+      font-weight: bold;
+    }
+    .btn-toggle {
+      margin-top: 10px;
+    }
+    .answer {
+      display: none;
+      margin-top: 10px;
+      padding: 10px;
+      background: #f8f9fa;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body class="bg-light">
+
+<div class="container mt-5">
+  <h1 class="mb-4 text-center">JavaScript If Statement Exercises</h1>
+
+  <!-- Exercise 1 -->
+  <div class="exercise card">
+    <div class="card-header bg-primary text-white">Exercise 1: Basic If Statement</div>
+    <div class="card-body">
+      <p>Write an <code>if</code> statement that checks if the variable <code>number</code> is greater than 10. If it is, log "The number is greater than 10" to the console.</p>
+      <button class="btn btn-secondary btn-sm btn-toggle" onclick="toggleAnswer('answer1')">Show Answer</button>
+      <div class="answer mt-3" id="answer1">
+        <pre><code>let number = 15;
+if (number > 10) {
+  console.log("The number is greater than 10");
+}</code></pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- Exercise 2 -->
+  <div class="exercise card">
+    <div class="card-header bg-primary text-white">Exercise 2: If-Else Statement</div>
+    <div class="card-body">
+      <p>Write an <code>if-else</code> statement that checks if a variable <code>age</code> is at least 18. If it is, log "You are an adult" to the console. Otherwise, log "You are a minor".</p>
+      <button class="btn btn-secondary btn-sm btn-toggle" onclick="toggleAnswer('answer2')">Show Answer</button>
+      <div class="answer mt-3" id="answer2">
+        <pre><code>let age = 16;
+if (age >= 18) {
+  console.log("You are an adult");
+} else {
+  console.log("You are a minor");
+}</code></pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- Exercise 3 -->
+  <div class="exercise card">
+    <div class="card-header bg-primary text-white">Exercise 3: Multiple Conditions</div>
+    <div class="card-body">
+      <p>Write an <code>if-else if-else</code> statement that checks a variable <code>grade</code> and logs:</p>
+      <ul>
+        <li>"A" if the grade is 90 or above</li>
+        <li>"B" if the grade is between 80 and 89</li>
+        <li>"C" if the grade is between 70 and 79</li>
+        <li>"Fail" if the grade is below 70</li>
+      </ul>
+      <button class="btn btn-secondary btn-sm btn-toggle" onclick="toggleAnswer('answer3')">Show Answer</button>
+      <div class="answer mt-3" id="answer3">
+        <pre><code>let grade = 85;
+if (grade >= 90) {
+  console.log("A");
+} else if (grade >= 80) {
+  console.log("B");
+} else if (grade >= 70) {
+  console.log("C");
+} else {
+  console.log("Fail");
+}</code></pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- Exercise 4 -->
+  <div class="exercise card">
+    <div class="card-header bg-primary text-white">Exercise 4: Checking Equality</div>
+    <div class="card-body">
+      <p>Write an <code>if</code> statement that checks if a variable <code>username</code> is equal to the string "admin". If it is, log "Welcome, admin" to the console.</p>
+      <button class="btn btn-secondary btn-sm btn-toggle" onclick="toggleAnswer('answer4')">Show Answer</button>
+      <div class="answer mt-3" id="answer4">
+        <pre><code>let username = "admin";
+if (username === "admin") {
+  console.log("Welcome, admin");
+}</code></pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- Exercise 5 -->
+  <div class="exercise card">
+    <div class="card-header bg-primary text-white">Exercise 5: Nested If Statements</div>
+    <div class="card-body">
+      <p>Write a nested <code>if</code> statement to check if a variable <code>number</code> is positive. If it is, check if the number is even or odd. Log "Positive and even" or "Positive and odd" accordingly.</p>
+      <button class="btn btn-secondary btn-sm btn-toggle" onclick="toggleAnswer('answer5')">Show Answer</button>
+      <div class="answer mt-3" id="answer5">
+        <pre><code>let number = 7;
+if (number > 0) {
+  if (number % 2 === 0) {
+    console.log("Positive and even");
+  } else {
+    console.log("Positive and odd");
+  }
+}</code></pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add other exercises here as needed -->
+
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  function toggleAnswer(id) {
+    const answerDiv = document.getElementById(id);
+    if (answerDiv.style.display === "none" || answerDiv.style.display === "") {
+      answerDiv.style.display = "block";
+    } else {
+      answerDiv.style.display = "none";
+    }
+  }
+</script>
+
+</body>
+</html>
