@@ -17,7 +17,7 @@
     <div class="card-body">
       <h3 class="card-title">Exercise 1: Write a Simple Function</h3>
       <p class="card-text">Write a function named <code>greet</code> that takes no parameters and logs "Hello, World!" to the console. Call the function.</p>
-      <button class="btn btn-primary btn-sm" onclick="toggleAnswer('answer1')">Show Answer</button>
+      <button class="btn btn-primary btn-sm" data-bs-toggle="collapse" data-bs-target="#answer1">Show Answer</button>
       <div class="alert alert-secondary mt-3 collapse" id="answer1">
         <pre><code>function greet() {
   console.log("Hello, World!");
@@ -32,7 +32,7 @@ greet();</code></pre>
     <div class="card-body">
       <h3 class="card-title">Exercise 2: Use Parameters in a Function</h3>
       <p class="card-text">Write a function named <code>sayHello</code> that takes a single parameter <code>name</code> and logs "Hello, [name]!" to the console. Call the function with your name as the argument.</p>
-      <button class="btn btn-primary btn-sm" onclick="toggleAnswer('answer2')">Show Answer</button>
+      <button class="btn btn-primary btn-sm" data-bs-toggle="collapse" data-bs-target="#answer2">Show Answer</button>
       <div class="alert alert-secondary mt-3 collapse" id="answer2">
         <pre><code>function sayHello(name) {
   console.log("Hello, " + name + "!");
@@ -47,7 +47,7 @@ sayHello("Alice");</code></pre>
     <div class="card-body">
       <h3 class="card-title">Exercise 3: Return a Value from a Function</h3>
       <p class="card-text">Write a function named <code>addNumbers</code> that takes two parameters <code>a</code> and <code>b</code>. The function should return the sum of the two numbers. Call the function and store the result in a variable, then log the result.</p>
-      <button class="btn btn-primary btn-sm" onclick="toggleAnswer('answer3')">Show Answer</button>
+      <button class="btn btn-primary btn-sm" data-bs-toggle="collapse" data-bs-target="#answer3">Show Answer</button>
       <div class="alert alert-secondary mt-3 collapse" id="answer3">
         <pre><code>function addNumbers(a, b) {
   return a + b;
@@ -63,7 +63,7 @@ console.log(result);</code></pre>
     <div class="card-body">
       <h3 class="card-title">Exercise 4: Use Default Parameters</h3>
       <p class="card-text">Write a function named <code>multiply</code> that takes two parameters <code>a</code> and <code>b</code>. If <code>b</code> is not provided, it should default to 1. The function should return the product of the two numbers. Call the function with and without the second argument.</p>
-      <button class="btn btn-primary btn-sm" onclick="toggleAnswer('answer4')">Show Answer</button>
+      <button class="btn btn-primary btn-sm" data-bs-toggle="collapse" data-bs-target="#answer4">Show Answer</button>
       <div class="alert alert-secondary mt-3 collapse" id="answer4">
         <pre><code>function multiply(a, b = 1) {
   return a * b;
@@ -79,7 +79,7 @@ console.log(multiply(7));    // 7</code></pre>
     <div class="card-body">
       <h3 class="card-title">Exercise 5: Function Naming Conventions</h3>
       <p class="card-text">Why is it important to use meaningful and descriptive names for functions? Write a short function named <code>calculateArea</code> that takes a single parameter <code>radius</code> and returns the area of a circle. Use the formula: <code>area = π * radius * radius</code> (use <code>Math.PI</code> for π).</p>
-      <button class="btn btn-primary btn-sm" onclick="toggleAnswer('answer5')">Show Answer</button>
+      <button class="btn btn-primary btn-sm" data-bs-toggle="collapse" data-bs-target="#answer5">Show Answer</button>
       <div class="alert alert-secondary mt-3 collapse" id="answer5">
         <pre><code>function calculateArea(radius) {
   return Math.PI * radius * radius;
@@ -94,7 +94,7 @@ console.log(calculateArea(5)); // 78.53981633974483</code></pre>
     <div class="card-body">
       <h3 class="card-title">Exercise 6: Function Expressions</h3>
       <p class="card-text">Create a function expression named <code>subtract</code> that takes two parameters <code>a</code> and <code>b</code> and returns their difference. Call the function and log the result.</p>
-      <button class="btn btn-primary btn-sm" onclick="toggleAnswer('answer6')">Show Answer</button>
+      <button class="btn btn-primary btn-sm" data-bs-toggle="collapse" data-bs-target="#answer6">Show Answer</button>
       <div class="alert alert-secondary mt-3 collapse" id="answer6">
         <pre><code>const subtract = function(a, b) {
   return a - b;
@@ -109,7 +109,7 @@ console.log(subtract(10, 3)); // 7</code></pre>
     <div class="card-body">
       <h3 class="card-title">Exercise 7: Arrow Functions</h3>
       <p class="card-text">Rewrite the <code>subtract</code> function from the previous exercise using arrow function syntax.</p>
-      <button class="btn btn-primary btn-sm" onclick="toggleAnswer('answer7')">Show Answer</button>
+      <button class="btn btn-primary btn-sm" data-bs-toggle="collapse" data-bs-target="#answer7">Show Answer</button>
       <div class="alert alert-secondary mt-3 collapse" id="answer7">
         <pre><code>const subtract = (a, b) => a - b;
 console.log(subtract(10, 3)); // 7</code></pre>
@@ -122,7 +122,7 @@ console.log(subtract(10, 3)); // 7</code></pre>
     <div class="card-body">
       <h3 class="card-title">Exercise 8: Higher-Order Functions</h3>
       <p class="card-text">Write a function named <code>applyOperation</code> that takes two numbers and a function as arguments. The function should apply the passed function to the two numbers and return the result. Call the function with numbers and a simple addition function.</p>
-      <button class="btn btn-primary btn-sm" onclick="toggleAnswer('answer8')">Show Answer</button>
+      <button class="btn btn-primary btn-sm" data-bs-toggle="collapse" data-bs-target="#answer8">Show Answer</button>
       <div class="alert alert-secondary mt-3 collapse" id="answer8">
         <pre><code>function applyOperation(a, b, operation) {
   return operation(a, b);
@@ -138,7 +138,7 @@ console.log(applyOperation(5, 3, addition)); // 8</code></pre>
     <div class="card-body">
       <h3 class="card-title">Exercise 9: Anonymous Functions</h3>
       <p class="card-text">Use an anonymous function with the <code>applyOperation</code> function from the previous exercise to multiply two numbers. Log the result.</p>
-      <button class="btn btn-primary btn-sm" onclick="toggleAnswer('answer9')">Show Answer</button>
+      <button class="btn btn-primary btn-sm" data-bs-toggle="collapse" data-bs-target="#answer9">Show Answer</button>
       <div class="alert alert-secondary mt-3 collapse" id="answer9">
         <pre><code>console.log(applyOperation(4, 5, function(a, b) {
   return a * b;
@@ -152,7 +152,7 @@ console.log(applyOperation(5, 3, addition)); // 8</code></pre>
     <div class="card-body">
       <h3 class="card-title">Exercise 10: Function Scope</h3>
       <p class="card-text">Write a function named <code>testScope</code> that declares a variable <code>message</code> inside it and assigns the value "This is local". Log the variable inside the function and attempt to log it outside the function. Explain the result.</p>
-      <button class="btn btn-primary btn-sm" onclick="toggleAnswer('answer10')">Show Answer</button>
+      <button class="btn btn-primary btn-sm" data-bs-toggle="collapse" data-bs-target="#answer10">Show Answer</button>
       <div class="alert alert-secondary mt-3 collapse" id="answer10">
         <pre><code>function testScope() {
   let message = "This is local";
@@ -163,18 +163,10 @@ console.log(message); // Error: message is not defined (because it's scoped to t
       </div>
     </div>
   </div>
-
 </div>
 
 <!-- Bootstrap JS and dependencies -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script>
-  function toggleAnswer(id) {
-    const answerDiv = document.getElementById(id);
-    const collapseInstance = new bootstrap.Collapse(answerDiv);
-    collapseInstance.toggle();
-  }
-</script>
 
 </body>
 </html>
