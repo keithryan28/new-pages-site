@@ -4,163 +4,122 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>JavaScript Variable Exercises</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 20px;
-    }
     .exercise {
       margin-bottom: 20px;
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
+    }
+    .card-header {
+      font-weight: bold;
+    }
+    .btn-toggle {
+      margin-top: 10px;
     }
     .answer {
       display: none;
       margin-top: 10px;
       padding: 10px;
-      background: #f9f9f9;
+      background: #f8f9fa;
       border: 1px solid #ddd;
       border-radius: 5px;
     }
-    button {
-      padding: 5px 10px;
-      font-size: 14px;
-      cursor: pointer;
-      margin-top: 10px;
-    }
   </style>
 </head>
-<body>
+<body class="bg-light">
 
-<h1>JavaScript Variable Exercises</h1>
+<div class="container mt-5">
+  <h1 class="mb-4 text-center">JavaScript Variable Exercises</h1>
 
-<!-- Exercise 1 -->
-<div class="exercise">
-  <h3>Exercise 1: Declare and Assign a Variable</h3>
-  <p>Declare a variable named <code>myName</code> and assign your name to it as a string. Print the value of <code>myName</code> to the console.</p>
-  <button onclick="toggleAnswer('answer1')">Show Answer</button>
-  <div class="answer" id="answer1">
-    <pre><code>let myName = "John";
+  <!-- Exercise 1 -->
+  <div class="exercise card">
+    <div class="card-header bg-primary text-white">Exercise 1: Declare and Assign a Variable</div>
+    <div class="card-body">
+      <p>Declare a variable named <code>myName</code> and assign your name to it as a string. Print the value of <code>myName</code> to the console.</p>
+      <button class="btn btn-secondary btn-sm btn-toggle" onclick="toggleAnswer('answer1')">Show Answer</button>
+      <div class="answer mt-3" id="answer1">
+        <pre><code>let myName = "John";
 console.log(myName);</code></pre>
+      </div>
+    </div>
   </div>
-</div>
 
-<!-- Exercise 2 -->
-<div class="exercise">
-  <h3>Exercise 2: Use <code>const</code> for Constant Values</h3>
-  <p>Declare a constant variable named <code>pi</code> and assign it the value <code>3.14</code>. Print the value of <code>pi</code> to the console.</p>
-  <button onclick="toggleAnswer('answer2')">Show Answer</button>
-  <div class="answer" id="answer2">
-    <pre><code>const pi = 3.14;
+  <!-- Exercise 2 -->
+  <div class="exercise card">
+    <div class="card-header bg-primary text-white">Exercise 2: Use <code>const</code> for Constant Values</div>
+    <div class="card-body">
+      <p>Declare a constant variable named <code>pi</code> and assign it the value <code>3.14</code>. Print the value of <code>pi</code> to the console.</p>
+      <button class="btn btn-secondary btn-sm btn-toggle" onclick="toggleAnswer('answer2')">Show Answer</button>
+      <div class="answer mt-3" id="answer2">
+        <pre><code>const pi = 3.14;
 console.log(pi);</code></pre>
+      </div>
+    </div>
   </div>
-</div>
 
-<!-- Exercise 3 -->
-<div class="exercise">
-  <h3>Exercise 3: Reassign a <code>let</code> Variable</h3>
-  <p>Declare a variable named <code>myAge</code> and assign it the value <code>20</code>. Reassign the value of <code>myAge</code> to <code>25</code>. Print the new value of <code>myAge</code> to the console.</p>
-  <button onclick="toggleAnswer('answer3')">Show Answer</button>
-  <div class="answer" id="answer3">
-    <pre><code>let myAge = 20;
+  <!-- Exercise 3 -->
+  <div class="exercise card">
+    <div class="card-header bg-primary text-white">Exercise 3: Reassign a <code>let</code> Variable</div>
+    <div class="card-body">
+      <p>Declare a variable named <code>myAge</code> and assign it the value <code>20</code>. Reassign the value of <code>myAge</code> to <code>25</code>. Print the new value of <code>myAge</code> to the console.</p>
+      <button class="btn btn-secondary btn-sm btn-toggle" onclick="toggleAnswer('answer3')">Show Answer</button>
+      <div class="answer mt-3" id="answer3">
+        <pre><code>let myAge = 20;
 myAge = 25;
 console.log(myAge);</code></pre>
+      </div>
+    </div>
   </div>
-</div>
 
-<!-- Exercise 4 -->
-<div class="exercise">
-  <h3>Exercise 4: Declare Multiple Variables</h3>
-  <p>Declare three variables: <code>firstName</code>, <code>lastName</code>, and <code>fullName</code>. Assign your first and last names to the respective variables, and concatenate them to assign to <code>fullName</code>. Print <code>fullName</code> to the console.</p>
-  <button onclick="toggleAnswer('answer4')">Show Answer</button>
-  <div class="answer" id="answer4">
-    <pre><code>let firstName = "John", lastName = "Doe";
+  <!-- Exercise 4 -->
+  <div class="exercise card">
+    <div class="card-header bg-primary text-white">Exercise 4: Declare Multiple Variables</div>
+    <div class="card-body">
+      <p>Declare three variables: <code>firstName</code>, <code>lastName</code>, and <code>fullName</code>. Assign your first and last names to the respective variables, and concatenate them to assign to <code>fullName</code>. Print <code>fullName</code> to the console.</p>
+      <button class="btn btn-secondary btn-sm btn-toggle" onclick="toggleAnswer('answer4')">Show Answer</button>
+      <div class="answer mt-3" id="answer4">
+        <pre><code>let firstName = "John", lastName = "Doe";
 let fullName = firstName + " " + lastName;
 console.log(fullName);</code></pre>
+      </div>
+    </div>
   </div>
-</div>
 
-<!-- Exercise 5 -->
-<div class="exercise">
-  <h3>Exercise 5: Use Different Data Types</h3>
-  <p>Declare a variable named <code>isLearning</code> and assign it the boolean value <code>true</code>. Declare a variable named <code>score</code> and assign it the number <code>100</code>. Print both variables to the console.</p>
-  <button onclick="toggleAnswer('answer5')">Show Answer</button>
-  <div class="answer" id="answer5">
-    <pre><code>let isLearning = true;
+  <!-- Exercise 5 -->
+  <div class="exercise card">
+    <div class="card-header bg-primary text-white">Exercise 5: Use Different Data Types</div>
+    <div class="card-body">
+      <p>Declare a variable named <code>isLearning</code> and assign it the boolean value <code>true</code>. Declare a variable named <code>score</code> and assign it the number <code>100</code>. Print both variables to the console.</p>
+      <button class="btn btn-secondary btn-sm btn-toggle" onclick="toggleAnswer('answer5')">Show Answer</button>
+      <div class="answer mt-3" id="answer5">
+        <pre><code>let isLearning = true;
 let score = 100;
 console.log(isLearning);
 console.log(score);</code></pre>
+      </div>
+    </div>
   </div>
-</div>
 
-<!-- Exercise 6 -->
-<div class="exercise">
-  <h3>Exercise 6: Combine Strings and Numbers</h3>
-  <p>Declare a variable named <code>message</code> and assign it the value <code>"You scored " + score + " points!"</code>. Use the <code>score</code> variable from the previous exercise. Print the value of <code>message</code> to the console.</p>
-  <button onclick="toggleAnswer('answer6')">Show Answer</button>
-  <div class="answer" id="answer6">
-    <pre><code>let score = 100;
+  <!-- Exercise 6 -->
+  <div class="exercise card">
+    <div class="card-header bg-primary text-white">Exercise 6: Combine Strings and Numbers</div>
+    <div class="card-body">
+      <p>Declare a variable named <code>message</code> and assign it the value <code>"You scored " + score + " points!"</code>. Use the <code>score</code> variable from the previous exercise. Print the value of <code>message</code> to the console.</p>
+      <button class="btn btn-secondary btn-sm btn-toggle" onclick="toggleAnswer('answer6')">Show Answer</button>
+      <div class="answer mt-3" id="answer6">
+        <pre><code>let score = 100;
 let message = "You scored " + score + " points!";
 console.log(message);</code></pre>
+      </div>
+    </div>
   </div>
+
+  <!-- Add more exercises as needed -->
+
 </div>
 
-<!-- Exercise 7 -->
-<div class="exercise">
-  <h3>Exercise 7: Use Template Literals</h3>
-  <p>Rewrite the <code>message</code> variable from the previous exercise using template literals. Print the value of <code>message</code> to the console.</p>
-  <button onclick="toggleAnswer('answer7')">Show Answer</button>
-  <div class="answer" id="answer7">
-    <pre><code>let score = 100;
-let message = `You scored ${score} points!`;
-console.log(message);</code></pre>
-  </div>
-</div>
-
-<!-- Exercise 8 -->
-<div class="exercise">
-  <h3>Exercise 8: Swap Variable Values</h3>
-  <p>Declare two variables <code>a</code> and <code>b</code> with values <code>5</code> and <code>10</code>, respectively. Swap their values without directly reassigning the numbers. Print the new values of <code>a</code> and <code>b</code> to the console.</p>
-  <button onclick="toggleAnswer('answer8')">Show Answer</button>
-  <div class="answer" id="answer8">
-    <pre><code>let a = 5, b = 10;
-let temp = a;
-a = b;
-b = temp;
-console.log(a); // 10
-console.log(b); // 5</code></pre>
-  </div>
-</div>
-
-<!-- Exercise 9 -->
-<div class="exercise">
-  <h3>Exercise 9: Use <code>typeof</code> to Check Data Types</h3>
-  <p>Declare variables of different types: <code>let name = "Alice"; let age = 30; let isStudent = false;</code>. Use <code>console.log()</code> to print the type of each variable using <code>typeof</code>.</p>
-  <button onclick="toggleAnswer('answer9')">Show Answer</button>
-  <div class="answer" id="answer9">
-    <pre><code>let name = "Alice";
-let age = 30;
-let isStudent = false;
-
-console.log(typeof name); // "string"
-console.log(typeof age); // "number"
-console.log(typeof isStudent); // "boolean"</code></pre>
-  </div>
-</div>
-
-<!-- Exercise 10 -->
-<div class="exercise">
-  <h3>Exercise 10: Declare Variables Without Assigning Values</h3>
-  <p>Declare a variable named <code>myVariable</code> but do not assign a value to it. Print the value and type of <code>myVariable</code> to the console.</p>
-  <button onclick="toggleAnswer('answer10')">Show Answer</button>
-  <div class="answer" id="answer10">
-    <pre><code>let myVariable;
-console.log(myVariable); // undefined
-console.log(typeof myVariable); // "undefined"</code></pre>
-  </div>
-</div>
-
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 <script>
   function toggleAnswer(id) {
     const answerDiv = document.getElementById(id);
