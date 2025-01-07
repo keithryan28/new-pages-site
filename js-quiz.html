@@ -109,12 +109,13 @@ console.log(calculateArea(5)); // 78.53981633974483</code></pre>
   <!-- Exercise 7 -->
   <div class="card mb-3">
     <div class="card-body">
-      <h3 class="card-title">Exercise 7: Arrow Functions</h3>
-      <p class="card-text">Rewrite the <code>subtract</code> function from the previous exercise using arrow function syntax.</p>
+      <h3 class="card-title">Exercise 7: Multiple ParametersFunctions</h3>
+      <p class="card-text">Create a function that takes 3 parameters and returns a value of the 3 values multipied</p>
       <button class="btn btn-primary btn-sm" data-bs-toggle="collapse" data-bs-target="#answer7">Show Answer</button>
       <div class="alert alert-secondary mt-3 collapse" id="answer7">
-        <pre><code>const subtract = (a, b) => a - b;
-console.log(subtract(10, 3)); // 7</code></pre>
+        <pre><code>function mulNum(a,b,c){
+          return a X b X c;
+        }</code></pre>
       </div>
     </div>
   </div>
@@ -122,15 +123,19 @@ console.log(subtract(10, 3)); // 7</code></pre>
   <!-- Exercise 8 -->
   <div class="card mb-3">
     <div class="card-body">
-      <h3 class="card-title">Exercise 8: Higher-Order Functions</h3>
-      <p class="card-text">Write a function named <code>applyOperation</code> that takes two numbers and a function as arguments. The function should apply the passed function to the two numbers and return the result. Call the function with numbers and a simple addition function.</p>
+      <h3 class="card-title">Exercise 8: Troubleshooting</h3>
+      <p class="card-text">What would be the outcome of the following function running? 
+        <code>function mulNum(a,b,c){
+          return a X b;
+        }
+        mulNum(4,5);
+        </code>
+      </p>
       <button class="btn btn-primary btn-sm" data-bs-toggle="collapse" data-bs-target="#answer8">Show Answer</button>
       <div class="alert alert-secondary mt-3 collapse" id="answer8">
-        <pre><code>function applyOperation(a, b, operation) {
-  return operation(a, b);
-}
-const addition = (x, y) => x + y;
-console.log(applyOperation(5, 3, addition)); // 8</code></pre>
+        <pre><code>
+        NaN
+        </code></pre>
       </div>
     </div>
   </div>
