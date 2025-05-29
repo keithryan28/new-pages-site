@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Vinyl Collection</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --accent-color: #00ffab;
+            --bg-color: #0f0f0f;
+            --card-color: #1c1c1c;
+            --text-color: #ffffff;
+            --muted-color: #dddddd;
+            --border-color: #333;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        h1 {
+            color: var(--accent-color);
+            text-shadow: 0 0 10px var(--accent-color);
+        }
+
+        .card {
+            background: linear-gradient(145deg, #1a1a1a, #101010);
+            border: 1px solid var(--border-color);
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 15px rgba(0, 255, 171, 0.1);
+            display: flex;
+            flex-direction: row;
+            align-items: flex-start;
+            gap: 1rem;
+            color: var(--text-color);
+            padding: 1rem;
+        }
+
+        .card img {
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 0.5rem;
+            flex-shrink: 0;
+            align-self: flex-start;
+        }
+
+        .card-body {
+            flex: 1;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .card-text {
+            margin-bottom: 0.25rem;
+        }
+
+        .description {
+            color: var(--muted-color);
+        }
+
+        .form-select,
+        .form-control {
+            background-color: #1c1c1c;
+            color: var(--text-color);
+            border: 1px solid var(--border-color);
+        }
+
+        .form-select:focus {
+            color: var(--text-color);
+        }
+
+        .form-select option {
+            background-color: #1c1c1c;
+            color: var(--text-color);
+        }
+
+        .form-select:not(:focus) {
+            color: var(--muted-color);
+        }
+
+        .pagination .page-link {
+            background-color: var(--card-color);
+            color: var(--accent-color);
+            border: 1px solid var(--border-color);
+        }
+
+        .pagination .page-item.active .page-link {
+            background-color: var(--accent-color);
+            color: #000;
+            border-color: var(--accent-color);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container py-5">
+        <h1 class="mb-4 text-center">My Vinyl Collection</h1>
+        <div class="row mb-3 justify-content-center">
+            <div class="col-md-4 mb-2">
+                <input type="text" id="filterInput" class="form-control" placeholder="Filter by title or artist">
+            </div>
+            <div class="col-md-3 mb-2">
+                <select id="sortSelect" class="form-select">
+                    <option value="title">Sort by Title</option>
+                    <option value="artist">Sort by Artist</option>
+                    <option value="year">Sort by Year</option>
+                    <option value="category">Sort by Category</option>
+                </select>
+            </div>
+        </div>
+        <div id="vinylGrid" class="d-flex flex-column gap-3"></div>
+        <nav>
+            <ul class="pagination justify-content-center mt-4" id="pagination"></ul>
+        </nav>
+    </div>
+
+    <script>
+        const vinylData = [
+            {
+                "title": "Abbey Road",
+                "artist": "The Beatles",
+                "year": 1969,
+                "category": "Rock",
+                "image": "https://i.discogs.com/M2yc5OJZPdVoDm2_UlRRXuDlDguamLLSdnbziNmZoQI/rs:fit/g:sm/q:90/h:600/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTI2MDc0/MjQtMTYzMDYwMTA4/Ny0xMTk5LmpwZWc.jpeg",
+                "description": "A classic Beatles album known for its iconic cover and hit songs."
+            },
+            {
+                "title": "The Dark Side of the Moon",
+                "artist": "Pink Floyd",
+                "year": 1973,
+                "category": "Progressive Rock",
+                "image": "https://i.discogs.com/f9HxltpumjQpZlcBXQzxXvurnEmyeJBM-nby8zXfXNo/rs:fit/g:sm/q:90/h:600/w:590/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTE4NzMw/MTMtMTcyNzc2NDkx/OS04NTI3LmpwZWc.jpeg",
+                "description": "One of the best-selling albums of all time, known for its concept and sound engineering."
+            },
+            {
+                "title": "Thriller",
+                "artist": "Michael Jackson",
+                "year": 1982,
+                "category": "Pop",
+                "image": "https://i.discogs.com/dWe2AyguSxJpaaEWbK_mVLL3zs2ejuta0sJCx5BvS8o/rs:fit/g:sm/q:90/h:600/w:597/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTI5MTEy/OTMtMTU5NDI0NTgx/Mi03OTMxLmpwZWc.jpeg",
+                "description": "The best-selling album worldwide, featuring hits like 'Billie Jean' and 'Beat It'."
+            },
+            {
+                "title": "Thriller",
+                "artist": "Michael Jackson",
+                "year": 1982,
+                "category": "Pop",
+                "image": "https://i.discogs.com/dWe2AyguSxJpaaEWbK_mVLL3zs2ejuta0sJCx5BvS8o/rs:fit/g:sm/q:90/h:600/w:597/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTI5MTEy/OTMtMTU5NDI0NTgx/Mi03OTMxLmpwZWc.jpeg",
+                "description": "The best-selling album worldwide, featuring hits like 'Billie Jean' and 'Beat It'."
+            },
+            {
+                "title": "Thriller",
+                "artist": "Michael Jackson",
+                "year": 1982,
+                "category": "Pop",
+                "image": "https://i.discogs.com/dWe2AyguSxJpaaEWbK_mVLL3zs2ejuta0sJCx5BvS8o/rs:fit/g:sm/q:90/h:600/w:597/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTI5MTEy/OTMtMTU5NDI0NTgx/Mi03OTMxLmpwZWc.jpeg",
+                "description": "The best-selling album worldwide, featuring hits like 'Billie Jean' and 'Beat It'."
+            },
+            {
+                "title": "Thriller",
+                "artist": "Michael Jackson",
+                "year": 1982,
+                "category": "Pop",
+                "image": "https://i.discogs.com/dWe2AyguSxJpaaEWbK_mVLL3zs2ejuta0sJCx5BvS8o/rs:fit/g:sm/q:90/h:600/w:597/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTI5MTEy/OTMtMTU5NDI0NTgx/Mi03OTMxLmpwZWc.jpeg",
+                "description": "The best-selling album worldwide, featuring hits like 'Billie Jean' and 'Beat It'."
+            }, 
+            {
+                "title": "Abbey Road",
+                "artist": "The Beatles",
+                "year": 1969,
+                "category": "Rock",
+                "image": "https://i.discogs.com/M2yc5OJZPdVoDm2_UlRRXuDlDguamLLSdnbziNmZoQI/rs:fit/g:sm/q:90/h:600/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTI2MDc0/MjQtMTYzMDYwMTA4/Ny0xMTk5LmpwZWc.jpeg",
+                "description": "A classic Beatles album known for its iconic cover and hit songs."
+            },
+            {
+                "title": "The Dark Side of the Moon",
+                "artist": "Pink Floyd",
+                "year": 1973,
+                "category": "Progressive Rock",
+                "image": "https://i.discogs.com/f9HxltpumjQpZlcBXQzxXvurnEmyeJBM-nby8zXfXNo/rs:fit/g:sm/q:90/h:600/w:590/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTE4NzMw/MTMtMTcyNzc2NDkx/OS04NTI3LmpwZWc.jpeg",
+                "description": "One of the best-selling albums of all time, known for its concept and sound engineering."
+            },
+            {
+                "title": "Thriller",
+                "artist": "Michael Jackson",
+                "year": 1982,
+                "category": "Pop",
+                "image": "https://i.discogs.com/dWe2AyguSxJpaaEWbK_mVLL3zs2ejuta0sJCx5BvS8o/rs:fit/g:sm/q:90/h:600/w:597/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTI5MTEy/OTMtMTU5NDI0NTgx/Mi03OTMxLmpwZWc.jpeg",
+                "description": "The best-selling album worldwide, featuring hits like 'Billie Jean' and 'Beat It'."
+            },
+            {
+                "title": "Thriller",
+                "artist": "Michael Jackson",
+                "year": 1982,
+                "category": "Pop",
+                "image": "https://i.discogs.com/dWe2AyguSxJpaaEWbK_mVLL3zs2ejuta0sJCx5BvS8o/rs:fit/g:sm/q:90/h:600/w:597/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTI5MTEy/OTMtMTU5NDI0NTgx/Mi03OTMxLmpwZWc.jpeg",
+                "description": "The best-selling album worldwide, featuring hits like 'Billie Jean' and 'Beat It'."
+            },
+            {
+                "title": "Thriller",
+                "artist": "Michael Jackson",
+                "year": 1982,
+                "category": "Pop",
+                "image": "https://i.discogs.com/dWe2AyguSxJpaaEWbK_mVLL3zs2ejuta0sJCx5BvS8o/rs:fit/g:sm/q:90/h:600/w:597/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTI5MTEy/OTMtMTU5NDI0NTgx/Mi03OTMxLmpwZWc.jpeg",
+                "description": "The best-selling album worldwide, featuring hits like 'Billie Jean' and 'Beat It'."
+            },
+            {
+                "title": "Thriller",
+                "artist": "Michael Jackson",
+                "year": 1982,
+                "category": "Pop",
+                "image": "https://i.discogs.com/dWe2AyguSxJpaaEWbK_mVLL3zs2ejuta0sJCx5BvS8o/rs:fit/g:sm/q:90/h:600/w:597/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTI5MTEy/OTMtMTU5NDI0NTgx/Mi03OTMxLmpwZWc.jpeg",
+                "description": "The best-selling album worldwide, featuring hits like 'Billie Jean' and 'Beat It'."
+            },
+            {
+                "title": "Abbey Road",
+                "artist": "The Beatles",
+                "year": 1969,
+                "category": "Rock",
+                "image": "https://i.discogs.com/M2yc5OJZPdVoDm2_UlRRXuDlDguamLLSdnbziNmZoQI/rs:fit/g:sm/q:90/h:600/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTI2MDc0/MjQtMTYzMDYwMTA4/Ny0xMTk5LmpwZWc.jpeg",
+                "description": "A classic Beatles album known for its iconic cover and hit songs."
+            },
+            {
+                "title": "The Dark Side of the Moon",
+                "artist": "Pink Floyd",
+                "year": 1973,
+                "category": "Progressive Rock",
+                "image": "https://i.discogs.com/f9HxltpumjQpZlcBXQzxXvurnEmyeJBM-nby8zXfXNo/rs:fit/g:sm/q:90/h:600/w:590/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTE4NzMw/MTMtMTcyNzc2NDkx/OS04NTI3LmpwZWc.jpeg",
+                "description": "One of the best-selling albums of all time, known for its concept and sound engineering."
+            },
+            {
+                "title": "Thriller",
+                "artist": "Michael Jackson",
+                "year": 1982,
+                "category": "Pop",
+                "image": "https://i.discogs.com/dWe2AyguSxJpaaEWbK_mVLL3zs2ejuta0sJCx5BvS8o/rs:fit/g:sm/q:90/h:600/w:597/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTI5MTEy/OTMtMTU5NDI0NTgx/Mi03OTMxLmpwZWc.jpeg",
+                "description": "The best-selling album worldwide, featuring hits like 'Billie Jean' and 'Beat It'."
+            },
+            {
+                "title": "Thriller",
+                "artist": "Michael Jackson",
+                "year": 1982,
+                "category": "Pop",
+                "image": "https://i.discogs.com/dWe2AyguSxJpaaEWbK_mVLL3zs2ejuta0sJCx5BvS8o/rs:fit/g:sm/q:90/h:600/w:597/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTI5MTEy/OTMtMTU5NDI0NTgx/Mi03OTMxLmpwZWc.jpeg",
+                "description": "The best-selling album worldwide, featuring hits like 'Billie Jean' and 'Beat It'."
+            },
+            {
+                "title": "Thriller",
+                "artist": "Michael Jackson",
+                "year": 1982,
+                "category": "Pop",
+                "image": "https://i.discogs.com/dWe2AyguSxJpaaEWbK_mVLL3zs2ejuta0sJCx5BvS8o/rs:fit/g:sm/q:90/h:600/w:597/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTI5MTEy/OTMtMTU5NDI0NTgx/Mi03OTMxLmpwZWc.jpeg",
+                "description": "The best-selling album worldwide, featuring hits like 'Billie Jean' and 'Beat It'."
+            },
+            {
+                "title": "Thriller",
+                "artist": "Michael Jackson",
+                "year": 1982,
+                "category": "Pop",
+                "image": "https://i.discogs.com/dWe2AyguSxJpaaEWbK_mVLL3zs2ejuta0sJCx5BvS8o/rs:fit/g:sm/q:90/h:600/w:597/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTI5MTEy/OTMtMTU5NDI0NTgx/Mi03OTMxLmpwZWc.jpeg",
+                "description": "The best-selling album worldwide, featuring hits like 'Billie Jean' and 'Beat It'."
+            },
+            {
+                "title": "Abbey Road",
+                "artist": "The Beatles",
+                "year": 1969,
+                "category": "Rock",
+                "image": "https://i.discogs.com/M2yc5OJZPdVoDm2_UlRRXuDlDguamLLSdnbziNmZoQI/rs:fit/g:sm/q:90/h:600/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTI2MDc0/MjQtMTYzMDYwMTA4/Ny0xMTk5LmpwZWc.jpeg",
+                "description": "A classic Beatles album known for its iconic cover and hit songs."
+            },
+            {
+                "title": "The Dark Side of the Moon",
+                "artist": "Pink Floyd",
+                "year": 1973,
+                "category": "Progressive Rock",
+                "image": "https://i.discogs.com/f9HxltpumjQpZlcBXQzxXvurnEmyeJBM-nby8zXfXNo/rs:fit/g:sm/q:90/h:600/w:590/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTE4NzMw/MTMtMTcyNzc2NDkx/OS04NTI3LmpwZWc.jpeg",
+                "description": "One of the best-selling albums of all time, known for its concept and sound engineering."
+            },
+            {
+                "title": "Thriller",
+                "artist": "Michael Jackson",
+                "year": 1982,
+                "category": "Pop",
+                "image": "https://i.discogs.com/dWe2AyguSxJpaaEWbK_mVLL3zs2ejuta0sJCx5BvS8o/rs:fit/g:sm/q:90/h:600/w:597/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTI5MTEy/OTMtMTU5NDI0NTgx/Mi03OTMxLmpwZWc.jpeg",
+                "description": "The best-selling album worldwide, featuring hits like 'Billie Jean' and 'Beat It'."
+            },
+            {
+                "title": "Thriller",
+                "artist": "Michael Jackson",
+                "year": 1982,
+                "category": "Pop",
+                "image": "https://i.discogs.com/dWe2AyguSxJpaaEWbK_mVLL3zs2ejuta0sJCx5BvS8o/rs:fit/g:sm/q:90/h:600/w:597/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTI5MTEy/OTMtMTU5NDI0NTgx/Mi03OTMxLmpwZWc.jpeg",
+                "description": "The best-selling album worldwide, featuring hits like 'Billie Jean' and 'Beat It'."
+            },
+            {
+                "title": "Thriller",
+                "artist": "Michael Jackson",
+                "year": 1982,
+                "category": "Pop",
+                "image": "https://i.discogs.com/dWe2AyguSxJpaaEWbK_mVLL3zs2ejuta0sJCx5BvS8o/rs:fit/g:sm/q:90/h:600/w:597/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTI5MTEy/OTMtMTU5NDI0NTgx/Mi03OTMxLmpwZWc.jpeg",
+                "description": "The best-selling album worldwide, featuring hits like 'Billie Jean' and 'Beat It'."
+            },
+            {
+                "title": "Thriller",
+                "artist": "Michael Jackson",
+                "year": 1982,
+                "category": "Pop",
+                "image": "https://i.discogs.com/dWe2AyguSxJpaaEWbK_mVLL3zs2ejuta0sJCx5BvS8o/rs:fit/g:sm/q:90/h:600/w:597/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTI5MTEy/OTMtMTU5NDI0NTgx/Mi03OTMxLmpwZWc.jpeg",
+                "description": "The best-selling album worldwide, featuring hits like 'Billie Jean' and 'Beat It'."
+            },
+            {
+                "title": "Abbey Road",
+                "artist": "The Beatles",
+                "year": 1969,
+                "category": "Rock",
+                "image": "https://i.discogs.com/M2yc5OJZPdVoDm2_UlRRXuDlDguamLLSdnbziNmZoQI/rs:fit/g:sm/q:90/h:600/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTI2MDc0/MjQtMTYzMDYwMTA4/Ny0xMTk5LmpwZWc.jpeg",
+                "description": "A classic Beatles album known for its iconic cover and hit songs."
+            },
+            {
+                "title": "The Dark Side of the Moon",
+                "artist": "Pink Floyd",
+                "year": 1973,
+                "category": "Progressive Rock",
+                "image": "https://i.discogs.com/f9HxltpumjQpZlcBXQzxXvurnEmyeJBM-nby8zXfXNo/rs:fit/g:sm/q:90/h:600/w:590/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTE4NzMw/MTMtMTcyNzc2NDkx/OS04NTI3LmpwZWc.jpeg",
+                "description": "One of the best-selling albums of all time, known for its concept and sound engineering."
+            },
+            {
+                "title": "Thriller",
+                "artist": "Michael Jackson",
+                "year": 1982,
+                "category": "Pop",
+                "image": "https://i.discogs.com/dWe2AyguSxJpaaEWbK_mVLL3zs2ejuta0sJCx5BvS8o/rs:fit/g:sm/q:90/h:600/w:597/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTI5MTEy/OTMtMTU5NDI0NTgx/Mi03OTMxLmpwZWc.jpeg",
+                "description": "The best-selling album worldwide, featuring hits like 'Billie Jean' and 'Beat It'."
+            },
+            {
+                "title": "Thriller",
+                "artist": "Michael Jackson",
+                "year": 1982,
+                "category": "Pop",
+                "image": "https://i.discogs.com/dWe2AyguSxJpaaEWbK_mVLL3zs2ejuta0sJCx5BvS8o/rs:fit/g:sm/q:90/h:600/w:597/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTI5MTEy/OTMtMTU5NDI0NTgx/Mi03OTMxLmpwZWc.jpeg",
+                "description": "The best-selling album worldwide, featuring hits like 'Billie Jean' and 'Beat It'."
+            },
+            {
+                "title": "Thriller",
+                "artist": "Michael Jackson",
+                "year": 1982,
+                "category": "Pop",
+                "image": "https://i.discogs.com/dWe2AyguSxJpaaEWbK_mVLL3zs2ejuta0sJCx5BvS8o/rs:fit/g:sm/q:90/h:600/w:597/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTI5MTEy/OTMtMTU5NDI0NTgx/Mi03OTMxLmpwZWc.jpeg",
+                "description": "The best-selling album worldwide, featuring hits like 'Billie Jean' and 'Beat It'."
+            },
+            {
+                "title": "Thriller",
+                "artist": "Michael Jackson",
+                "year": 1982,
+                "category": "Pop",
+                "image": "https://i.discogs.com/dWe2AyguSxJpaaEWbK_mVLL3zs2ejuta0sJCx5BvS8o/rs:fit/g:sm/q:90/h:600/w:597/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTI5MTEy/OTMtMTU5NDI0NTgx/Mi03OTMxLmpwZWc.jpeg",
+                "description": "The best-selling album worldwide, featuring hits like 'Billie Jean' and 'Beat It'."
+            },            {
+                "title": "Abbey Road",
+                "artist": "The Beatles",
+                "year": 1969,
+                "category": "Rock",
+                "image": "https://i.discogs.com/M2yc5OJZPdVoDm2_UlRRXuDlDguamLLSdnbziNmZoQI/rs:fit/g:sm/q:90/h:600/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTI2MDc0/MjQtMTYzMDYwMTA4/Ny0xMTk5LmpwZWc.jpeg",
+                "description": "A classic Beatles album known for its iconic cover and hit songs."
+            },
+            {
+                "title": "The Dark Side of the Moon",
+                "artist": "Pink Floyd",
+                "year": 1973,
+                "category": "Progressive Rock",
+                "image": "https://i.discogs.com/f9HxltpumjQpZlcBXQzxXvurnEmyeJBM-nby8zXfXNo/rs:fit/g:sm/q:90/h:600/w:590/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTE4NzMw/MTMtMTcyNzc2NDkx/OS04NTI3LmpwZWc.jpeg",
+                "description": "One of the best-selling albums of all time, known for its concept and sound engineering."
+            },
+            {
+                "title": "Thriller",
+                "artist": "Michael Jackson",
+                "year": 1982,
+                "category": "Pop",
+                "image": "https://i.discogs.com/dWe2AyguSxJpaaEWbK_mVLL3zs2ejuta0sJCx5BvS8o/rs:fit/g:sm/q:90/h:600/w:597/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTI5MTEy/OTMtMTU5NDI0NTgx/Mi03OTMxLmpwZWc.jpeg",
+                "description": "The best-selling album worldwide, featuring hits like 'Billie Jean' and 'Beat It'."
+            },
+            {
+                "title": "Thriller",
+                "artist": "Michael Jackson",
+                "year": 1982,
+                "category": "Pop",
+                "image": "https://i.discogs.com/dWe2AyguSxJpaaEWbK_mVLL3zs2ejuta0sJCx5BvS8o/rs:fit/g:sm/q:90/h:600/w:597/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTI5MTEy/OTMtMTU5NDI0NTgx/Mi03OTMxLmpwZWc.jpeg",
+                "description": "The best-selling album worldwide, featuring hits like 'Billie Jean' and 'Beat It'."
+            },
+            {
+                "title": "Thriller",
+                "artist": "Michael Jackson",
+                "year": 1982,
+                "category": "Pop",
+                "image": "https://i.discogs.com/dWe2AyguSxJpaaEWbK_mVLL3zs2ejuta0sJCx5BvS8o/rs:fit/g:sm/q:90/h:600/w:597/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTI5MTEy/OTMtMTU5NDI0NTgx/Mi03OTMxLmpwZWc.jpeg",
+                "description": "The best-selling album worldwide, featuring hits like 'Billie Jean' and 'Beat It'."
+            },
+            {
+                "title": "Thriller",
+                "artist": "Michael Jackson",
+                "year": 1982,
+                "category": "Pop",
+                "image": "https://i.discogs.com/dWe2AyguSxJpaaEWbK_mVLL3zs2ejuta0sJCx5BvS8o/rs:fit/g:sm/q:90/h:600/w:597/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTI5MTEy/OTMtMTU5NDI0NTgx/Mi03OTMxLmpwZWc.jpeg",
+                "description": "The best-selling album worldwide, featuring hits like 'Billie Jean' and 'Beat It'."
+            },
+            {
+                "title": "Abbey Road",
+                "artist": "The Beatles",
+                "year": 1969,
+                "category": "Rock",
+                "image": "https://i.discogs.com/M2yc5OJZPdVoDm2_UlRRXuDlDguamLLSdnbziNmZoQI/rs:fit/g:sm/q:90/h:600/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTI2MDc0/MjQtMTYzMDYwMTA4/Ny0xMTk5LmpwZWc.jpeg",
+                "description": "A classic Beatles album known for its iconic cover and hit songs."
+            },
+            {
+                "title": "The Dark Side of the Moon",
+                "artist": "Pink Floyd",
+                "year": 1973,
+                "category": "Progressive Rock",
+                "image": "https://i.discogs.com/f9HxltpumjQpZlcBXQzxXvurnEmyeJBM-nby8zXfXNo/rs:fit/g:sm/q:90/h:600/w:590/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTE4NzMw/MTMtMTcyNzc2NDkx/OS04NTI3LmpwZWc.jpeg",
+                "description": "One of the best-selling albums of all time, known for its concept and sound engineering."
+            },
+            {
+                "title": "Thriller",
+                "artist": "Michael Jackson",
+                "year": 1982,
+                "category": "Pop",
+                "image": "https://i.discogs.com/dWe2AyguSxJpaaEWbK_mVLL3zs2ejuta0sJCx5BvS8o/rs:fit/g:sm/q:90/h:600/w:597/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTI5MTEy/OTMtMTU5NDI0NTgx/Mi03OTMxLmpwZWc.jpeg",
+                "description": "The best-selling album worldwide, featuring hits like 'Billie Jean' and 'Beat It'."
+            },
+            {
+                "title": "Thriller",
+                "artist": "Michael Jackson",
+                "year": 1982,
+                "category": "Pop",
+                "image": "https://i.discogs.com/dWe2AyguSxJpaaEWbK_mVLL3zs2ejuta0sJCx5BvS8o/rs:fit/g:sm/q:90/h:600/w:597/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTI5MTEy/OTMtMTU5NDI0NTgx/Mi03OTMxLmpwZWc.jpeg",
+                "description": "The best-selling album worldwide, featuring hits like 'Billie Jean' and 'Beat It'."
+            },
+            {
+                "title": "Thriller",
+                "artist": "Michael Jackson",
+                "year": 1982,
+                "category": "Pop",
+                "image": "https://i.discogs.com/dWe2AyguSxJpaaEWbK_mVLL3zs2ejuta0sJCx5BvS8o/rs:fit/g:sm/q:90/h:600/w:597/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTI5MTEy/OTMtMTU5NDI0NTgx/Mi03OTMxLmpwZWc.jpeg",
+                "description": "The best-selling album worldwide, featuring hits like 'Billie Jean' and 'Beat It'."
+            },
+            {
+                "title": "Thriller",
+                "artist": "Michael Jackson",
+                "year": 1982,
+                "category": "Pop",
+                "image": "https://i.discogs.com/dWe2AyguSxJpaaEWbK_mVLL3zs2ejuta0sJCx5BvS8o/rs:fit/g:sm/q:90/h:600/w:597/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTI5MTEy/OTMtMTU5NDI0NTgx/Mi03OTMxLmpwZWc.jpeg",
+                "description": "The best-selling album worldwide, featuring hits like 'Billie Jean' and 'Beat It'."
+            },
+            {
+                "title": "Abbey Road",
+                "artist": "The Beatles",
+                "year": 1969,
+                "category": "Rock",
+                "image": "https://i.discogs.com/M2yc5OJZPdVoDm2_UlRRXuDlDguamLLSdnbziNmZoQI/rs:fit/g:sm/q:90/h:600/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTI2MDc0/MjQtMTYzMDYwMTA4/Ny0xMTk5LmpwZWc.jpeg",
+                "description": "A classic Beatles album known for its iconic cover and hit songs."
+            },
+            {
+                "title": "The Dark Side of the Moon",
+                "artist": "Pink Floyd",
+                "year": 1973,
+                "category": "Progressive Rock",
+                "image": "https://i.discogs.com/f9HxltpumjQpZlcBXQzxXvurnEmyeJBM-nby8zXfXNo/rs:fit/g:sm/q:90/h:600/w:590/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTE4NzMw/MTMtMTcyNzc2NDkx/OS04NTI3LmpwZWc.jpeg",
+                "description": "One of the best-selling albums of all time, known for its concept and sound engineering."
+            },
+            {
+                "title": "Thriller",
+                "artist": "Michael Jackson",
+                "year": 1982,
+                "category": "Pop",
+                "image": "https://i.discogs.com/dWe2AyguSxJpaaEWbK_mVLL3zs2ejuta0sJCx5BvS8o/rs:fit/g:sm/q:90/h:600/w:597/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTI5MTEy/OTMtMTU5NDI0NTgx/Mi03OTMxLmpwZWc.jpeg",
+                "description": "The best-selling album worldwide, featuring hits like 'Billie Jean' and 'Beat It'."
+            },
+            {
+                "title": "Thriller",
+                "artist": "Michael Jackson",
+                "year": 1982,
+                "category": "Pop",
+                "image": "https://i.discogs.com/dWe2AyguSxJpaaEWbK_mVLL3zs2ejuta0sJCx5BvS8o/rs:fit/g:sm/q:90/h:600/w:597/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTI5MTEy/OTMtMTU5NDI0NTgx/Mi03OTMxLmpwZWc.jpeg",
+                "description": "The best-selling album worldwide, featuring hits like 'Billie Jean' and 'Beat It'."
+            },
+            {
+                "title": "Thriller",
+                "artist": "Michael Jackson",
+                "year": 1982,
+                "category": "Pop",
+                "image": "https://i.discogs.com/dWe2AyguSxJpaaEWbK_mVLL3zs2ejuta0sJCx5BvS8o/rs:fit/g:sm/q:90/h:600/w:597/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTI5MTEy/OTMtMTU5NDI0NTgx/Mi03OTMxLmpwZWc.jpeg",
+                "description": "The best-selling album worldwide, featuring hits like 'Billie Jean' and 'Beat It'."
+            },
+            {
+                "title": "Thriller",
+                "artist": "Michael Jackson",
+                "year": 1982,
+                "category": "Pop",
+                "image": "https://i.discogs.com/dWe2AyguSxJpaaEWbK_mVLL3zs2ejuta0sJCx5BvS8o/rs:fit/g:sm/q:90/h:600/w:597/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTI5MTEy/OTMtMTU5NDI0NTgx/Mi03OTMxLmpwZWc.jpeg",
+                "description": "The best-selling album worldwide, featuring hits like 'Billie Jean' and 'Beat It'."
+            },
+            {
+                "title": "Abbey Road",
+                "artist": "The Beatles",
+                "year": 1969,
+                "category": "Rock",
+                "image": "https://i.discogs.com/M2yc5OJZPdVoDm2_UlRRXuDlDguamLLSdnbziNmZoQI/rs:fit/g:sm/q:90/h:600/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTI2MDc0/MjQtMTYzMDYwMTA4/Ny0xMTk5LmpwZWc.jpeg",
+                "description": "A classic Beatles album known for its iconic cover and hit songs."
+            },
+            {
+                "title": "The Dark Side of the Moon",
+                "artist": "Pink Floyd",
+                "year": 1973,
+                "category": "Progressive Rock",
+                "image": "https://i.discogs.com/f9HxltpumjQpZlcBXQzxXvurnEmyeJBM-nby8zXfXNo/rs:fit/g:sm/q:90/h:600/w:590/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTE4NzMw/MTMtMTcyNzc2NDkx/OS04NTI3LmpwZWc.jpeg",
+                "description": "One of the best-selling albums of all time, known for its concept and sound engineering."
+            },
+            {
+                "title": "Thriller",
+                "artist": "Michael Jackson",
+                "year": 1982,
+                "category": "Pop",
+                "image": "https://i.discogs.com/dWe2AyguSxJpaaEWbK_mVLL3zs2ejuta0sJCx5BvS8o/rs:fit/g:sm/q:90/h:600/w:597/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTI5MTEy/OTMtMTU5NDI0NTgx/Mi03OTMxLmpwZWc.jpeg",
+                "description": "The best-selling album worldwide, featuring hits like 'Billie Jean' and 'Beat It'."
+            },
+            {
+                "title": "Thriller",
+                "artist": "Michael Jackson",
+                "year": 1982,
+                "category": "Pop",
+                "image": "https://i.discogs.com/dWe2AyguSxJpaaEWbK_mVLL3zs2ejuta0sJCx5BvS8o/rs:fit/g:sm/q:90/h:600/w:597/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTI5MTEy/OTMtMTU5NDI0NTgx/Mi03OTMxLmpwZWc.jpeg",
+                "description": "The best-selling album worldwide, featuring hits like 'Billie Jean' and 'Beat It'."
+            },
+            {
+                "title": "Thriller",
+                "artist": "Michael Jackson",
+                "year": 1982,
+                "category": "Pop",
+                "image": "https://i.discogs.com/dWe2AyguSxJpaaEWbK_mVLL3zs2ejuta0sJCx5BvS8o/rs:fit/g:sm/q:90/h:600/w:597/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTI5MTEy/OTMtMTU5NDI0NTgx/Mi03OTMxLmpwZWc.jpeg",
+                "description": "The best-selling album worldwide, featuring hits like 'Billie Jean' and 'Beat It'."
+            },
+            {
+                "title": "Thriller",
+                "artist": "Michael Jackson",
+                "year": 1982,
+                "category": "Pop",
+                "image": "https://i.discogs.com/dWe2AyguSxJpaaEWbK_mVLL3zs2ejuta0sJCx5BvS8o/rs:fit/g:sm/q:90/h:600/w:597/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTI5MTEy/OTMtMTU5NDI0NTgx/Mi03OTMxLmpwZWc.jpeg",
+                "description": "The best-selling album worldwide, featuring hits like 'Billie Jean' and 'Beat It'."
+            }                                                                        
+        ];
+
+        const ITEMS_PER_PAGE = 25;
+        let currentPage = 1;
+        let filteredData = [...vinylData];
+
+        function renderVinyls() {
+            const start = (currentPage - 1) * ITEMS_PER_PAGE;
+            const end = start + ITEMS_PER_PAGE;
+            const grid = document.getElementById('vinylGrid');
+            grid.innerHTML = '';
+
+            filteredData.slice(start, end).forEach(record => {
+                const item = document.createElement('div');
+                item.className = 'card';
+                item.innerHTML = `
+                    <img src="${record.image}" alt="${record.title}">
+                    <div class="card-body">
+                        <div class="card-title">${record.title}</div>
+                        <div class="card-text"><strong>${record.artist}</strong> (${record.year})</div>
+                        <div class="card-text">Category: <em>${record.category}</em></div>
+                        <div class="card-text description">${record.description || ''}</div>
+                    </div>
+                `;
+                grid.appendChild(item);
+            });
+
+            renderPagination();
+        }
+
+        function renderPagination() {
+            const totalPages = Math.ceil(filteredData.length / ITEMS_PER_PAGE);
+            const pagination = document.getElementById('pagination');
+            pagination.innerHTML = '';
+
+            for (let i = 1; i <= totalPages; i++) {
+                const li = document.createElement('li');
+                li.className = `page-item ${i === currentPage ? 'active' : ''}`;
+                li.innerHTML = `<a class="page-link" href="#">${i}</a>`;
+                li.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    currentPage = i;
+                    renderVinyls();
+                });
+                pagination.appendChild(li);
+            }
+        }
+
+        document.getElementById('filterInput').addEventListener('input', function () {
+            const query = this.value.toLowerCase();
+            filteredData = vinylData.filter(v =>
+                v.title.toLowerCase().includes(query) ||
+                v.artist.toLowerCase().includes(query)
+            );
+            currentPage = 1;
+            renderVinyls();
+        });
+
+        document.getElementById('sortSelect').addEventListener('change', function () {
+            const sortKey = this.value;
+            filteredData.sort((a, b) => a[sortKey].toString().localeCompare(b[sortKey].toString()));
+            renderVinyls();
+        });
+
+        renderVinyls();
+    </script>
+</body>
+
+</html>
