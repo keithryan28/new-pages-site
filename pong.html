@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Pong Game</title>
+  <style>
+    body {
+      margin: 0;
+      background: black;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      color: white;
+    }
+    canvas {
+      background: #111;
+      display: block;
+      border: 2px solid white;
+    }
+    #scoreboard {
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+<div id="scoreboard">Left: 0 | Right: 0</div>
+<canvas id="pongCanvas" width="800" height="400"></canvas>
+<script>
+  const canvas = document.getElementById('pongCanvas');
+  const ctx = canvas.getContext('2d');
+  const scoreboard = document.getElementById('scoreboard');
+
+  const paddleWidth = 10, paddleHeight = 100;
+  let leftPaddleY = canvas.height / 2 - paddleHeight / 2;
+  let rightPaddleY = canvas.height / 2 - paddleHeight / 2;
+  const paddleSpeed = 5;
+
+  let ballX = canvas.width / 2;
+  let ballY = canvas.height / 2;
+  let ballSpeedX = 6; // Increased initial speed
+  let ballSpeedY = 3;
+  const ballSize = 10;
+
+  let leftUp = false, leftDown = false;
+  let rightUp = false, rightDown = false;
+
+  let leftScore = 0;
+  let rightScore = 0;
+  let gameOver = false;
+
+  // Placeholder audio elements for future sound files
+  const scoreSound = new Audio('score.mp3');
+  const paddleSound = new Audio('paddle.mp3');
+  const wallSound = new Audio('wall.mp3');
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'w') leftUp = true;
+    if (e.key === 's') leftDown = true;
+    if (e.key === 'p') rightUp = true;
+    if (e.key === 'l') rightDown = true;
+  });
+
+  document.addEventListener('keyup', (e) => {
+    if (e.key === 'w') leftUp = false;
+    if (e.key === 's') leftDown = false;
+    if (e.key === 'p') rightUp = false;
+    if (e.key === 'l') rightDown = false;
+  });
+
+  function drawRect(x, y, w, h, color) {
+    ctx.fillStyle = color;
+    ctx.fillRect(x, y, w, h);
+  }
+
+  function drawBall(x, y, size, color) {
+    ctx.fillStyle = color;
+    ctx.fillRect(x, y, size, size);
+  }
+
+  function resetBall() {
+    ballX = canvas.width / 2;
+    ballY = canvas.height / 2;
+    ballSpeedX = (Math.random() > 0.5 ? 1 : -1) * 6;
+    ballSpeedY = 3 * (Math.random() > 0.5 ? 1 : -1);
+  }
+
+  function updateScore() {
+    scoreboard.textContent = `Left: ${leftScore} | Right: ${rightScore}`;
+    if (leftScore >= 10 || rightScore >= 10) {
+      gameOver = true;
+    }
+  }
+
+  function update() {
+    if (gameOver) return;
+
+    if (leftUp) leftPaddleY -= paddleSpeed;
+    if (leftDown) leftPaddleY += paddleSpeed;
+    if (rightUp) rightPaddleY -= paddleSpeed;
+    if (rightDown) rightPaddleY += paddleSpeed;
+
+    leftPaddleY = Math.max(Math.min(leftPaddleY, canvas.height - paddleHeight), 0);
+    rightPaddleY = Math.max(Math.min(rightPaddleY, canvas.height - paddleHeight), 0);
+
+    ballX += ballSpeedX;
+    ballY += ballSpeedY;
+
+    if (ballY <= 0 || ballY + ballSize >= canvas.height) {
+      ballSpeedY = -ballSpeedY;
+      wallSound.play();
+    }
+
+    if (
+      ballX <= paddleWidth &&
+      ballY + ballSize > leftPaddleY &&
+      ballY < leftPaddleY + paddleHeight
+    ) {
+      ballSpeedX = -ballSpeedX * 1.05;
+      ballX = paddleWidth;
+      paddleSound.play();
+      console.log("paddleSound");
+    }
+
+    if (
+      ballX + ballSize >= canvas.width - paddleWidth &&
+      ballY + ballSize > rightPaddleY &&
+      ballY < rightPaddleY + paddleHeight
+    ) {
+      ballSpeedX = -ballSpeedX * 1.05;
+      ballX = canvas.width - paddleWidth - ballSize;
+      paddleSound.play();
+    }
+
+    if (ballX < 0) {
+      rightScore++;
+      updateScore();
+      scoreSound.play();
+      resetBall();
+    } else if (ballX > canvas.width) {
+      leftScore++;
+      updateScore();
+      scoreSound.play();
+      resetBall();
+    }
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    drawRect(0, leftPaddleY, paddleWidth, paddleHeight, 'white');
+    drawRect(canvas.width - paddleWidth, rightPaddleY, paddleWidth, paddleHeight, 'white');
+    drawBall(ballX, ballY, ballSize, 'white');
+
+    if (gameOver) {
+      ctx.font = '40px Arial';
+      ctx.fillStyle = 'white';
+      const winner = leftScore >= 10 ? "Left" : "Right";
+      ctx.fillText(`${winner} Player Wins!`, canvas.width / 2 - 160, canvas.height / 2);
+    }
+  }
+
+  function loop() {
+    update();
+    draw();
+    requestAnimationFrame(loop);
+  }
+
+  loop();
+</script>
+</body>
+</html>
